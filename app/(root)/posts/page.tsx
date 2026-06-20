@@ -1,5 +1,10 @@
-import prisma from "@/lib/prisma";
+import { Suspense } from "react";
 import Link from "next/link";
+
+import RecentlyViewed from "@/components/RecentlyViewed";
+import { Skeleton } from "@/components/ui/skeleton";
+
+import { getPosts } from "@/lib/db";
 
 // interface PostProps {
 //     id: number;
@@ -12,7 +17,7 @@ export const dynamic = "force-dynamic";
 async function PostsPage() {
     // const response = await fetch("https://jsonplaceholder.typicode.com/posts");
     // const posts = await response.json();
-    const posts = await prisma.post.findMany();
+    const posts = await getPosts();
 
     return (
         <div className="space-y-8">
@@ -36,7 +41,7 @@ async function PostsPage() {
                         </li>
                     ))} */}
 
-                    {posts.slice(0, 10).map(({ id, title }) => (
+                    {posts.map(({ id, title }) => (
                         <li key={id}>
                             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                                 <Link
@@ -50,6 +55,12 @@ async function PostsPage() {
                         </li>
                     ))}
                 </ul>
+
+                <Suspense
+                    fallback={<Skeleton className="h-8 w-96 rounded-md" />}
+                >
+                    <RecentlyViewed />
+                </Suspense>
             </section>
         </div>
     );
