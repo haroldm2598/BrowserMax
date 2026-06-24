@@ -1,3 +1,4 @@
+// using server action opposite from route api handler
 "use server";
 
 import prisma from "@/lib/prisma";
@@ -17,4 +18,5 @@ export const createPost = async (formData: FormData) => {
     });
 
     revalidatePath("/posts");
+    // if you want to use cache in ./lib/queries.ts much as possible use revalidateTag("namecache")
 };

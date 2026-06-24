@@ -6,6 +6,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 import FormServerAction from "@/components/FormServerAction";
 import { getPosts } from "./lib/queries";
+import BtnUpVotes from "@/components/btn-upvotes";
+import ServerUpvotes from "@/components/serverUpvotes";
 
 // may ganito meaning yung page na to is SSR by default purpose alternative para sa cache : "no-store" sa response
 export const dynamic = "force-dynamic";
@@ -21,7 +23,7 @@ async function PostsPage() {
                 </h1>
 
                 <ul className="space-y-3">
-                    {posts.map(({ id, title }) => (
+                    {posts.map(({ id, title, votes }) => (
                         <li key={id}>
                             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                                 <Link
@@ -31,6 +33,8 @@ async function PostsPage() {
                                     {title.charAt(0).toUpperCase() +
                                         title.slice(1)}
                                 </Link>
+
+                                <ServerUpvotes PostId={id} votes={votes} />
                             </div>
                         </li>
                     ))}
@@ -45,6 +49,8 @@ async function PostsPage() {
                 <section className="space-y-4 border-t border-zinc-200 pt-6">
                     <FormServerAction />
                 </section>
+
+                <BtnUpVotes />
             </section>
         </div>
     );
